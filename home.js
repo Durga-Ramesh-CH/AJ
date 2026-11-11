@@ -685,13 +685,13 @@ function setupMemoryCalendar() {
   const defaultCountdownTitle = 'Our Next Big Anniversary 💍';
 
   let storedMetDate = localStorage.getItem('couple_met_date');
-  if (!storedMetDate || storedMetDate === '2025-11-11') {
+  if (!storedMetDate || storedMetDate === '2026-10-2') {
     storedMetDate = defaultMetISO;
     localStorage.setItem('couple_met_date', defaultMetISO);
   }
 
   let storedCountdownDate = localStorage.getItem('couple_countdown_date');
-  if (!storedCountdownDate || storedCountdownDate === '2026-12-26') {
+  if (!storedCountdownDate || storedCountdownDate === '2027-10-2') {
     storedCountdownDate = defaultCountdownISO;
     localStorage.setItem('couple_countdown_date', defaultCountdownISO);
   }
