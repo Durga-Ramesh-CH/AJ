@@ -680,19 +680,27 @@ function setupMemoryCalendar() {
   const inputCountdownDate = document.getElementById('input-countdown-date');
 
   // Default Dates Setup (stored in localStorage)
-  // Default first met date: ~1 year ago
-  const defaultMetDate = new Date();
-  defaultMetDate.setFullYear(defaultMetDate.getFullYear() - 1);
-  const defaultMetISO = defaultMetDate.toISOString().split('T')[0];
+  const defaultMetISO = '2025-10-02'; // October 2, 2025
+  const defaultCountdownISO = '2026-10-02'; // October 2, 2026
+  const defaultCountdownTitle = 'Our Next Big Anniversary 💍';
 
-  // Default next milestone: 45 days from today
-  const defaultCountdownDate = new Date();
-  defaultCountdownDate.setDate(defaultCountdownDate.getDate() + 45);
-  const defaultCountdownISO = defaultCountdownDate.toISOString().split('T')[0];
+  let storedMetDate = localStorage.getItem('couple_met_date');
+  if (!storedMetDate || storedMetDate === '2025-11-11') {
+    storedMetDate = defaultMetISO;
+    localStorage.setItem('couple_met_date', defaultMetISO);
+  }
 
-  let storedMetDate = localStorage.getItem('couple_met_date') || defaultMetISO;
-  let storedCountdownDate = localStorage.getItem('couple_countdown_date') || defaultCountdownISO;
-  let storedCountdownTitle = localStorage.getItem('couple_countdown_title') || "Our Next Big Anniversary 💍";
+  let storedCountdownDate = localStorage.getItem('couple_countdown_date');
+  if (!storedCountdownDate || storedCountdownDate === '2026-12-26') {
+    storedCountdownDate = defaultCountdownISO;
+    localStorage.setItem('couple_countdown_date', defaultCountdownISO);
+  }
+
+  let storedCountdownTitle = localStorage.getItem('couple_countdown_title');
+  if (!storedCountdownTitle || storedCountdownTitle === 'Next Anniversary Countdown ⏳') {
+    storedCountdownTitle = defaultCountdownTitle;
+    localStorage.setItem('couple_countdown_title', defaultCountdownTitle);
+  }
 
   // Pre-fill input dates
   if (inputMetDate) inputMetDate.value = storedMetDate;
@@ -797,13 +805,14 @@ function setupMemoryCalendar() {
     { title: "🎂 Mental Munda's Birthday", subtitle: "The day the prettiest girl arrived on Earth", dateBadge: "April 27th", tag: "Annual Celebration 🌸" },
     { title: "💬 The Day We First Spoke", subtitle: "That day started our journey.", dateBadge: "September 22nd", tag: "Destiny Day ✨" },
     { title: "💖 Meeting You For The First Time", subtitle: "My heart raced the exact second I saw you", dateBadge: "October 2nd", tag: "Endless Love 🌙" },
+    { title: "🍕 You Ordered Pizza For Me", subtitle: "You cared for me just like mom does ❤️", dateBadge: "October 30th", tag: "Pure Care 🍕" },
     { title: "🍦 Late Night Ice Cream", subtitle: "Sweet cravings and holding your hand under the stars", dateBadge: "Late Night", tag: "Sweet Moments 🌙" }
   ];
 
   const specialDatesGrid = document.getElementById('special-dates-grid');
   if (specialDatesGrid) {
     specialDatesGrid.innerHTML = specialDates.map(item => `
-      <div class="col-sm-6 col-lg-3">
+      <div class="col-sm-6 col-lg-4 col-xl">
         <div class="special-date-card p-3 h-100 text-center d-flex flex-column justify-content-between">
           <div>
             <span class="badge bg-danger-subtle text-danger rounded-pill px-3 py-1 mb-2 fw-semibold">${item.dateBadge}</span>
@@ -853,6 +862,14 @@ function setupMemoryCalendar() {
       story: "Meeting you at night and giving you that ice cream is a moment I will never forget. Watching you smile under the night lights while holding your hand made everything feel like magic.",
       photo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM7ZqVTQJkJ2sxODymKJUyvOgAYlpHgH3fp0wPkv3WeA&s=10",
       caption: "Our favorite golden hour 🌅"
+    },
+    {
+      id: 5,
+      title: "You ordered Pizza For me",
+      date: "October 30",
+      story: "You ordered pizza for me when I was really hungry. At that moment, I felt how much you care about me. You take care of me and even think about whether I have eaten, just like my mom does. Even though you didn't have much money at that time, you still made sure I had something to eat. That small thing meant a lot to me. ❤️",
+      photo: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=600&auto=format&fit=crop",
+      caption: "You take care of me just like mom does 🍕❤️"
     }
   ];
 
@@ -860,6 +877,12 @@ function setupMemoryCalendar() {
   try {
     const saved = localStorage.getItem('couple_memories');
     coupleMemories = saved ? JSON.parse(saved) : initialMemories;
+    // Ensure the pizza memory is present even if user already had couple_memories stored
+    const hasPizza = coupleMemories.some(m => m.title && m.title.toLowerCase().includes('pizza'));
+    if (!hasPizza) {
+      coupleMemories.push(initialMemories[4]);
+      localStorage.setItem('couple_memories', JSON.stringify(coupleMemories));
+    }
   } catch (err) {
     coupleMemories = initialMemories;
   }
