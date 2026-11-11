@@ -680,8 +680,8 @@ function setupMemoryCalendar() {
   const inputCountdownDate = document.getElementById('input-countdown-date');
 
   // Default Dates Setup (stored in localStorage)
-  const defaultMetISO = '2025-10-02'; // October 2, 2025
-  const defaultCountdownISO = '2026-10-02'; // October 2, 2026
+  const defaultMetISO = '2026-10-02'; // October 2, 2025
+  const defaultCountdownISO = '2027-10-02'; // October 2, 2026
   const defaultCountdownTitle = 'Our Next Big Anniversary 💍';
 
   let storedMetDate = localStorage.getItem('couple_met_date');
